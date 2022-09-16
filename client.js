@@ -1,4 +1,3 @@
-import { Server } from "./server.js"
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import * as net from 'node:net'
@@ -9,6 +8,7 @@ const { stdin: input, stdout: output, exit, removeAllListeners } = require('proc
 
 let myUserName = ''
 let myServer = ''
+const userList = []
 
 const rl = readline.createInterface({ input, output });
 
@@ -31,27 +31,31 @@ const createUser = async () => {
     } else {
         console.log("Username already exicst. try again!")
     }
+    await runChatProgram(myUserName, myServer)
 }
 
 const checkUserName = async (userName) => {
-    checkMyName = true
+    let checkMyName = true
     
     for(let i = 0; i < userList.length; i++) {
         if(userList[i].userName == userName) {
             checkMyName = false
-            return false
+            return checkMyName
         }
     }
 
-    return true
+    return checkMyName
 }
 
 const sendMessage = async (message, userName, myServers) => {
-    for(let i = 0; i < loggedInUsers.length; i++) {
-        if(loggedInUsers[i].userPort == myServers) {
-            console.log((`${userName}: ${message}`))
+    client.write(message)
+    /*for(let i = 0; i < userList.length; i++) {
+        if(userList[i].userPort == myServers) {
+            client.write((`${userName}: ${message}`))
+            console.log(userList);
         }
-    }
+    }*/
+    await runChatProgram(userName, myServers)
 }
 
 const runChatProgram = async (myUserName, myServer) => {
@@ -59,5 +63,5 @@ const runChatProgram = async (myUserName, myServer) => {
     await sendMessage(userMessage, myUserName, myServer)
 }
 
-/*createUser()
-runChatProgram()*/
+createUser()
+/*runChatProgram()*/

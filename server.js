@@ -9,7 +9,6 @@ function Server() {
     
     const rl = readline.createInterface({ input, output });
     const server = net.createServer();
-    const userList = []
     const loggedInUsers = []
     
     server.listen({
@@ -25,7 +24,7 @@ function Server() {
 
 Server()
 
-export { Server }
+/*export { Server }*/
 
 
 /*const createUser = async () => {
